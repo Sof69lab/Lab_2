@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Выход</title>
+</head>
+<body>
+{% block content %}
+  <p>Вы вышли из аккаунта!</p>
+
+  <a href="{% url 'login'%}">Нажмите сюда, чтобы авторизироваться снова.</a>
+{% endblock %}
+</body>
+</html>

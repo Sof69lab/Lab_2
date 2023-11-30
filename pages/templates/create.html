@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Новое сообщение</title>
+</head>
+<body>
+    <form method="POST">
+        {%csrf_token %}
+        {% if user.is_authenticated %}
+            <h1>Создание нового сообщения</h1>
+            <p>
+                {{ form.title.label }}<br />
+                {{ form.title }}
+            </p>
+            <p>
+                {{ form.body.label }}<br />
+                {{ form.body }}
+            </p>
+            <p>
+                {{ form.author }}
+            </p>
+            <input type="hidden" id="name" value="{{ user.get_username }}" />
+            <input type="submit" value="Отправить" />
+            <br />
+            <button><a href="{% url 'list' %}">Вернуться к просмотру сообщений</a></button>
+            <button><a href="{% url 'logout' %}">Выйти</a></button>
+        {% else %}
+            <p>Пожалуйста, авторизируйтесь, чтобы увидеть эту страницу.</p>
+            <button><a href="{% url 'login'%}?next={{request.path}}">Вход</a></button>
+        {% endif %}
+    </form>
+    <script>
+        document.getElementById("author").value = document.getElementById("name").value
+    </script>
+</body>
+</html>
