@@ -36,3 +36,9 @@ def registration(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+
+def contact(request):
+    return render(request, "contact.html", {})
+
+def about(request):
+    return render(request, "about.html", {})
