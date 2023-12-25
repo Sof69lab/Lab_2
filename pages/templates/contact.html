@@ -20,6 +20,9 @@
                     <li><a href="{% url 'list' %}">Просмотр сообщений</a></li>
                     <li><a href="{% url 'create' %}">Написать сообщение</a></li>
                     <li><a href="{% url 'about' %}">О сайте</a></li>
+                    {% if user.get_username == "admin" %}
+                    <li><a href="{% url 'logs' %}">Протокол действий пользователя</a></li>
+                    {% endif %}
                     <li><a href="{% url 'logout' %}">Выйти</a></li>
                 </ul>
             </nav>

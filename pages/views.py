@@ -4,7 +4,7 @@ from pages.models import Message
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from pages.forms import newMessage
+from pages.forms import newMessage, logs
 
 class MessageView(ListView):
     model = Message
@@ -36,6 +36,10 @@ def registration(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+
+def loggs(request):
+    form = logs()
+    return render(request, "logs.html", {'form': form})
 
 def contact(request):
     return render(request, "contact.html", {})

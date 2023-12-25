@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Протокол действий пользователей</title>
+    <style>
+        aside {
+          width: 15%;
+          float: left;
+          height: 100vh;
+        }
+    </style>
+</head>
+<body>
+{% if user.is_authenticated and user.get_username == "admin"%}
+        <aside> <!-- Боковая панель (сайдбар) -->
+            <nav> <!-- Дополнительное меню страницы -->
+                <ul>
+                    <p>Вы вошли под именем {{ user.get_username }}</p>
+                    <li><a href="{% url 'list' %}">Просмотр сообщений</a></li>
+                    <li><a href="{% url 'create' %}">Написать сообщение</a></li>
+                    <li><a href="{% url 'about' %}">О сайте</a></li>
+                    <li><a href="{% url 'contact' %}">Контакты</a></li>
+                    <li><a href="{% url 'logout' %}">Выйти</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <form method="get">
+            <table>
+                {{ form }}
+            </table>
+            <table border="1" id="table1"></table>
+        </form>
+        <script>
+            text = document.getElementById("logtext").value
+            let begin = 0;
+            let end = 0;
+            let timeS = [];
+            let logS = [];
+            let typeS = [];
+            let brk = 0;
+            //выделение подстрок с временем события и с описанием события
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] == "\n") {
+                    end = i;
+                    log = text.slice(begin,end);
+                    begin = end+1;
+                    for (let j = 0; j < log.length; j++) {
+                        if (log[j] == " ") {
+                            typeS.push(log.slice(0,j));
+                            brk = j;
+                            break;
+                        }
+                    }
+                    for (let j = brk; j < log.length; j++) {
+                        if (log[j] == ",") {
+                            timeS.push(log.slice(brk, j));
+                            logS.push(log.slice(j+1,log.length));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //создание и заполнение таблицы
+            let table = document.getElementById('table1');
+            table.replaceChildren();
+            let tr = document.createElement('tr');
+            let td0 = document.createElement('td');
+            td0.innerHTML = "Тип";
+            tr.appendChild(td0);
+            let td1 = document.createElement('td');
+            td1.innerHTML = "Дата и время";
+            tr.appendChild(td1);
+            let td2 = document.createElement('td');
+            td2.innerHTML = "Событие";
+            tr.appendChild(td2);
+            table.appendChild(tr);
+            for (let i = 0; i < timeS.length; i++) {
+                let tr = document.createElement('tr');
+                let td0 = document.createElement('td');
+                td0.innerHTML = typeS[i];
+                tr.appendChild(td0);
+                let td1 = document.createElement('td');
+                td1.innerHTML = timeS[i];
+                tr.appendChild(td1);
+                let td2 = document.createElement('td');
+                td2.innerHTML = logS[i];
+                tr.appendChild(td2);
+                table.appendChild(tr);
+            }
+        </script>
+{% else %}
+    <aside> <!-- Боковая панель (сайдбар) -->
+        <nav> <!-- Дополнительное меню страницы -->
+            <ul>
+                <li><a href="{% url 'list' %}">Просмотр сообщений</a></li>
+                <li><a href="{% url 'about' %}">О сайте</a></li>
+                <li><a href="{% url 'contact' %}">Контакты</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <p>Пожалуйста, авторизируйтесь как администратор, чтобы увидеть эту страницу.</p>
+    <button><a href="{% url 'login'%}?next={{request.path}}">Вход</a></button>
+{% endif %}
+</body>
+</html>

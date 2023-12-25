@@ -15,3 +15,11 @@ class newMessage(forms.ModelForm):
             'body': 'Текст сообщения',
             'author': 'Автор',
         }
+
+class logs(forms.Form):
+    log = forms.CharField(label='', widget=forms.Textarea(attrs={'readonly': 'readonly', 'id': 'logtext', 'hidden': 'hidden'}))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        f = open("debug.log", "r")
+        text = f.read()
+        self.fields['log'].initial = text
